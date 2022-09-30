@@ -51,7 +51,7 @@ sigmoid = function(x){
 
 # actual predicted percentage that pokemon is legendary
 sigmoid(predict(log_reg, test_data_new))
-
+git 
 host(log_reg)
 ```
 
