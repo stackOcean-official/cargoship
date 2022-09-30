@@ -21,7 +21,7 @@ library(readr)
 library(hostr)
 
 # load data
-data = read_csv("pokemon.csv")
+data = read_csv("https://github.com/stackOcean-official/hostr/files/9681827/pokemon.csv")
 
 # create variables 
 legendary = data$is_legendary
