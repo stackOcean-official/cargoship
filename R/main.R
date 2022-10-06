@@ -34,6 +34,7 @@ host <- function(model, domain="hostr.so") {
   model_label = model_attribute[-1]
   input_label = model_label[-1]
   input_count = length(input_label)
+  # TODO split inputs & outputs
   data_type = c()
   # get model input data types
   for (data in model$data){
@@ -46,12 +47,9 @@ host <- function(model, domain="hostr.so") {
   names(df)[names(df) == 'data_type'] = 'type'
   # build json
   json = sprintf("{\"inputs\": %s}", toJSON(df))
-  # TODO send json to backend
+  # TODO add outputs to json
   res = POST("https://eo46w4us7yn0foz.m.pipedream.net", body = json, encode = "json")
-  print(rawToChar(res$content))
-  response_data = fromJSON(rawToChar(res$content))
-  # TODO call real backend to get Id
-  id = "UjdD2d"
+  id = fromJSON(rawToChar(res$content), ".id")
   print(sprintf("You can reach your model at https://%s/%s", domain, id))
 }
 
