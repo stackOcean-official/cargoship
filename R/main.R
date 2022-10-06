@@ -1,4 +1,3 @@
-library(jsonlite)
 # You can learn more about package authoring with RStudio at:
 #
 #   http://r-pkgs.had.co.nz/
@@ -20,23 +19,40 @@ library(jsonlite)
 #' host(model)
 #' host(model, "hostr.example.com")
 host <- function(model, domain="hostr.so") {
-  model_atributte = paste(attr(model$terms, "predvars"))
-  model_label = model_atributte[-1]
-  print(model_label)
+  # load required packages
+  if (!require(jsonlite)) {
+    install.packages("jsonlite")
+    library(jsonlite)
+  }
+  if (!require(httr)) {
+    install.packages("httr")
+    library(httr)
+  }
+
+  # get model inputs
+  model_attribute = paste(attr(model$terms, "predvars"))
+  model_label = model_attribute[-1]
   input_label = model_label[-1]
-  print(input_label)
   input_count = length(input_label)
-  print(input_count)
   data_type = c()
+  # get model input data types
   for (data in model$data){
-    print(typeof(data))
     data_type = append(data_type, typeof(data))
   }
-  values = cbind(model_label, data_type)
-  values = data.frame(values)
-  names(values)[names(values) == 'model_label'] = 'variable'
-  names(values)[names(values) == 'data_type'] = 'type'
-  print(values)
+  # build dataframe for inputs
+  df = cbind(model_label, data_type)
+  df = data.frame(df)
+  names(df)[names(df) == 'model_label'] = 'variable'
+  names(df)[names(df) == 'data_type'] = 'type'
+  # build json
+  json = sprintf("{\"inputs\": %s}", toJSON(df))
+  # TODO send json to backend
+  res = POST("https://eo46w4us7yn0foz.m.pipedream.net", body = json, encode = "json")
+  print(rawToChar(res$content))
+  response_data = fromJSON(rawToChar(res$content))
+  # TODO call real backend to get Id
+  id = "UjdD2d"
+  print(sprintf("You can reach your model at https://%s/%s", domain, id))
 }
 
 
