@@ -1,74 +1,91 @@
-# hostR
+# hostr - One-Command Hosting of R-models
 
-Deploy your R models easily to showcase your model or make it available via API.
+Share R-models with the world. Easily wrap them into an API or shiny server to show your work or integrate your models into other applications.
 
-> :warning: This repository is still in an early stage of development and isn't functional yet. We love the open source community and want to show what we are working on early. We will update this readme with more information once it is safe to use. Until then, feel free to share your thoughts, contact us, and contribute if you'd like.
+## What's inside?
 
----
+The hostr application consists of two bigger parts at the moment:
 
-## How to use
+### Apps and Packages
 
-Install the package from GitHub (If you don't have devtools, install it first: `install.packages("devtools")`):
+- `server`: the server reponsible for saving the R model, configuring the deployment and hosting the API/shiny servers of the users
+- `r-package`: the r-package that a user uses to locally in their project to start to deploy the model
 
-```
-devtools::install_github("stackOcean-official/hostr")
-```
+### Technologies used:
 
-In your code load the hostR package and after hand the model to our `host` function
+#### server:
 
-```r
-library(readr)
-library(hostr)
+- [Next.js](https://nextjs.org)
+- [Prisma](https://prisma.io/)
+- [Typescript](https://www.typescriptlang.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Docker](https://www.docker.com/)
 
-# load data
-data = read_csv("https://github.com/stackOcean-official/hostr/files/9681827/pokemon.csv")
+#### r-package:
 
-# create variables 
-legendary = data$is_legendary
-attack = data$attack
-defense = data$defense
+- [R](https://www.r-project.org/)
 
-# split train and test data
-data = data.frame(legendary, attack, defense)
-data_train = data[1:(nrow(data)-100),]
-data_test = data[(nrow(data)-99):nrow(data),]
+## How to setup the server
 
-# actual logistic regression
-log_reg = glm(legendary ~ attack + defense, data = data_train, family = binomial())
-summary(log_reg)
+For more information about how to use the R-package, please check the [Readme]() in the package.
 
+### First steps
 
-# input for new prediction
-attack = 120
-defense = 290
-test_data_new = data.frame(attack, defense)
+Clone the repository and move into the directory:
 
-# definition of a sigmoid function to normalize predictions
-sigmoid = function(x){
-  result = exp(x)/(1+exp(x))
-  return(result)
-}
-
-# actual predicted percentage that pokemon is legendary
-sigmoid(predict(log_reg, test_data_new))
-
-# host model 
-host(log_reg)
+```bash
+git clone https://github.com/stackOcean-official/hostr
+cd hostr
 ```
 
----
+### Database
 
-## Contributing
+We use [Prisma](https://prisma.io/) to manage & access our database. As such you will need a database for this project, either locally or hosted in the cloud.
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+To make this process easier, we offer a [`docker-compose.yml`](https://docs.docker.com/compose/) file to deploy a MySQL server locally with a new database named `hostr` (To change this update the `MYSQL_DATABASE` environment variable in the `docker-compose.yml` file):
 
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Make your changes
-4. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-5. Push to the branch (`git push origin feature/AmazingFeature`)
-6. Open a pull request
+```bash
+docker-compose up -d
+```
 
-## License
+Once deployed you will need to copy the `.env.example` file to `.env` in order for Prisma to have a `DATABASE_URL` environment variable to access.
 
-Distributed under the MIT License. See `LICENSE` for more information.
+```bash
+cp .env.example .env
+```
+
+If you added a custom database name, or use a cloud based database, you will need to update the `DATABASE_URL` in your `.env` accordingly.
+
+Once deployed & up & running, you will need to create & deploy migrations to your database to add the necessary tables. This can be done using [Prisma Migrate](https://www.prisma.io/migrate):
+
+```bash
+npx prisma migrate dev
+```
+
+If you need to push any existing migrations to the database, you can use either the Prisma db push or the Prisma migrate deploy command(s):
+
+```bash
+pnpm db:push
+
+# OR
+
+pnpm db:migrate:deploy
+```
+
+There is slight difference between the two commands & [Prisma offers a breakdown on which command is best to use](https://www.prisma.io/docs/concepts/components/prisma-migrate/db-push#choosing-db-push-or-prisma-migrate).
+
+### Build
+
+To build all apps and packages, run the following command:
+
+```bash
+pnpm build
+```
+
+### Develop
+
+To develop all apps and packages, run the following command:
+
+```bash
+pnpm dev
+```
