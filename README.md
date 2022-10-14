@@ -2,6 +2,8 @@
 
 Share R-models with the world. Easily wrap them into an API or shiny server to show your work or integrate your models into other applications.
 
+> :warning: This repository is still in an early stage of development. We love the open source community and want to show what we are working on early. We will update this readme with more information once it is safe to use. Until then, feel free to share your thoughts, contact us, and contribute if you'd like.
+
 ## What's inside?
 
 The hostr application consists of two bigger parts at the moment:
@@ -29,7 +31,22 @@ The hostr application consists of two bigger parts at the moment:
 
 For more information about how to use the R-package, please check the [Readme]() in the package.
 
-### How to run locally
+### Deployment on Server
+
+The easiest way to provision your server to use with hostr is to run our install script:
+
+```
+wget -q https://raw.githubusercontent.com/stackOcean-official/hostr/main/packages/scripts/install.sh -O install.sh; sudo bash ./install.sh
+```
+
+**Minimum Server Requirements:**
+
+- Linux Operating System (we recommend Ubuntu 20.04)
+- 1 vCPU
+- 2 GB Ram
+- 20 GB Storage
+
+### How to run locally (for development)
 
 To get the project running locally on your machine you need to have the following development tools installed:
 
