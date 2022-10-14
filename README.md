@@ -29,50 +29,62 @@ The hostr application consists of two bigger parts at the moment:
 
 For more information about how to use the R-package, please check the [Readme]() in the package.
 
-### First steps
+### How to run locally
 
-Clone the repository and move into the directory:
+To get the project running locally on your machine you need to have the following development tools installed:
 
-```bash
-git clone https://github.com/stackOcean-official/hostr
+- Node.JS (we recommend v16)
+- [pnpm](https://pnpm.io/)
+- [Docker](https://www.docker.com/) (to run PostgreSQL / MailHog)
+
+1. Clone the project:
+
+```
+git clone https://github.com/stackOcean-official/hostr.git
+```
+
+and move into the directory
+
+```
 cd hostr
 ```
 
-### Database
+2. Install Node.JS packages via pnpm. Don't have pnpm? Get it [here](https://pnpm.io/installation)
 
-We use [Prisma](https://prisma.io/) to manage & access our database. As such you will need a database for this project, either locally or hosted in the cloud.
-
-To make this process easier, we offer a [`docker-compose.yml`](https://docs.docker.com/compose/) file to deploy a MySQL server locally with a new database named `hostr` (To change this update the `MYSQL_DATABASE` environment variable in the `docker-compose.yml` file):
-
-```bash
-docker-compose up -d
+```
+pnpm install
 ```
 
-Once deployed you will need to copy the `.env.example` file to `.env` in order for Prisma to have a `DATABASE_URL` environment variable to access.
+3. To make the process of installing a dev dependencies easier, we offer a [`docker-compose.yml`](https://docs.docker.com/compose/) with the following servers:
 
-```bash
+- a `postgres` container and environment variables preset to reach it,
+- a `mailhog` container that acts as a mock SMTP server and shows received mails in a web UI (forwarded to your host's `localhost:8025`)
+
+```
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+4. Create a `.env` file based on `.env.example` and change it according to your setup. If you are using a cloud based database or another mail server, you will need to update the `DATABASE_URL` and SMTP settings in your `.env` accordingly.
+
+```
 cp .env.example .env
 ```
 
-If you added a custom database name, or use a cloud based database, you will need to update the `DATABASE_URL` in your `.env` accordingly.
+5. Make sure your PostgreSQL Database Server is running. Then let prisma set up the database for you:
 
-Once deployed & up & running, you will need to create & deploy migrations to your database to add the necessary tables. This can be done using [Prisma Migrate](https://www.prisma.io/migrate):
-
-```bash
-npx prisma migrate dev
+```
+pnpm dlx prisma migrate dev
 ```
 
-If you need to push any existing migrations to the database, you can use either the Prisma db push or the Prisma migrate deploy command(s):
+6. Start the development server:
 
-```bash
-pnpm db:push
-
-# OR
-
-pnpm db:migrate:deploy
+```
+pnpm dev
 ```
 
-There is slight difference between the two commands & [Prisma offers a breakdown on which command is best to use](https://www.prisma.io/docs/concepts/components/prisma-migrate/db-push#choosing-db-push-or-prisma-migrate).
+**You can now access the app on [https://localhost:3000](https://localhost:3000)**. You will be automatically redirected to the login. To use your local installation of hostr, create a new account.
+
+For viewing the confirmation email and other emails the system sends you, you can access mailhog at [https://localhost:8025](https://localhost:8025)
 
 ### Build
 
