@@ -17,8 +17,8 @@
 #' @export
 #' @examples
 #' host(model)
-#' host(model, "hostr.example.com")
-host <- function(model, domain="hostr.so") {
+#' host(model, "https://hostr.example.com")
+host <- function(model, domain="http://localhost:3000") {
   # load required packages
   if (!require(jsonlite)) {
     install.packages("jsonlite")
@@ -49,7 +49,9 @@ host <- function(model, domain="hostr.so") {
   json = sprintf("{\"inputs\": %s}", toJSON(df))
   # TODO add outputs to json
   # TODO upload model & add model to json
-  res = POST("https://eo46w4us7yn0foz.m.pipedream.net", body = json, encode = "json")
+  url=sprintf("%s/api/r/host", domain)
+  print(url)
+  res = POST(url, body = json, encode = "json", content_type_json(), accept_json())
   id = fromJSON(rawToChar(res$content), ".id")
   print(sprintf("You can reach your model at https://%s/%s", domain, id))
 }
