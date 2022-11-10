@@ -2,19 +2,56 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider             = "postgresql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
+model Project {
+  id             Int          @id @default(autoincrement())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId Int
+}
+
+model Organization {
+  id       Int          @id @default(autoincrement())
+  name     String
+  members  Membership[]
+  projects Project[]
+}
+
+enum MembershipRole {
+  MEMBER
+  ADMIN
+  OWNER
+}
+
+model Membership {
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId Int
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         Int
+  accepted       Boolean        @default(false)
+  role           MembershipRole
+
+  @@id([userId, organizationId])
+}
+
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
+  id            Int          @id @default(autoincrement())
+  firstname     String?
+  lastname      String?
+  email         String       @unique
+  emailVerified DateTime?    @map(name: "email_verified")
+  password      String
+  createdAt     DateTime     @default(now()) @map(name: "created_at")
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+  teams         Membership[]
+
+  @@map(name: "users")
 }

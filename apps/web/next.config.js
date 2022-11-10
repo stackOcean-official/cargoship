@@ -9,5 +9,15 @@ module.exports = {
   output: "standalone",
   experimental: {
     outputFileTracingRoot: path.join(__dirname, "../../"),
+    appDir: true,
   },
+  /* async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/forms/",
+        permanent: false,
+      },
+    ];
+  }, */
 };
