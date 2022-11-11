@@ -13,12 +13,12 @@ generator client {
 }
 
 model Project {
-  id             Int          @id @default(autoincrement())
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  organizationId Int
+  id           Int  @id @default(autoincrement())
+  organization Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId       Int
 }
 
-model Organization {
+model Team {
   id       Int          @id @default(autoincrement())
   name     String
   members  Membership[]
@@ -32,14 +32,14 @@ enum MembershipRole {
 }
 
 model Membership {
-  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  organizationId Int
-  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         Int
-  accepted       Boolean        @default(false)
-  role           MembershipRole
+  team     Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId   Int
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+  accepted Boolean        @default(false)
+  role     MembershipRole
 
-  @@id([userId, organizationId])
+  @@id([userId, teamId])
 }
 
 model User {

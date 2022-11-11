@@ -1,5 +1,5 @@
 {
-  "name": "prettier-config",
+  "name": "@cargoship/prettier-config",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",

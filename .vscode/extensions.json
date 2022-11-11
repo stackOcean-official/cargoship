@@ -5,7 +5,7 @@
     "DavidAnson.vscode-markdownlint", // markdown linting
     "dbaeumer.vscode-eslint", // eslint plugin
     "esbenp.prettier-vscode", // prettier plugin
-    "Prisma.prisma", // syntax|format|completion for prisma
-    "yzhang.markdown-all-in-one" // nicer markdown support
+    "Prisma.prisma", // VSCode support for prisma
+    "yzhang.markdown-all-in-one" // better markdown support
   ]
 }
