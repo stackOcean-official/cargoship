@@ -3,6 +3,8 @@
 import { Button } from "@cargoship/ui";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 import { signIn } from "next-auth/react";
+import Link from "next/dist/client/link";
+import { GithubButton } from "../GithubButton";
 
 export const SigninForm = ({ callbackUrl, error }) => {
   const handleSubmit = async (e) => {
@@ -72,6 +74,24 @@ export const SigninForm = ({ callbackUrl, error }) => {
             Sign in
           </Button>
         </div>
+        {process.env.NEXT_PUBLIC_PASSWORD_RESET_DISABLED !== "1" && (
+          <div>
+            <Link
+              href="/auth/forgot-password"
+              className="text-sky mt-3 grid grid-cols-1 space-y-2 text-center text-xs hover:text-sky-600">
+              Forgot your password?
+            </Link>
+          </div>
+        )}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center" aria-hidden="true">
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-white px-2 text-sm text-gray-500">Sign in with</span>
+          </div>
+        </div>
+        <GithubButton text="Sign in with GitHub" />
       </form>
     </>
   );

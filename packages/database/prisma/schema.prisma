@@ -42,16 +42,41 @@ model Membership {
   @@id([userId, teamId])
 }
 
+enum IdentityProvider {
+  EMAIL
+  GITHUB
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  user              User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  access_token      String? @db.Text
+  refresh_token     String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  @@unique([provider, providerAccountId])
+}
+
 model User {
-  id            Int          @id @default(autoincrement())
-  firstname     String?
-  lastname      String?
-  email         String       @unique
-  emailVerified DateTime?    @map(name: "email_verified")
-  password      String
-  createdAt     DateTime     @default(now()) @map(name: "created_at")
-  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
-  teams         Membership[]
+  id                        Int              @id @default(autoincrement())
+  name                      String?
+  email                     String           @unique
+  emailVerified             DateTime?        @map(name: "email_verified")
+  password                  String?
+  createdAt                 DateTime         @default(now()) @map(name: "created_at")
+  updatedAt                 DateTime         @updatedAt @map(name: "updated_at")
+  identityProvider          IdentityProvider @default(EMAIL)
+  identityProviderAccountId String?
+  teams                     Membership[]
+  accounts                  Account[]
 
   @@map(name: "users")
 }

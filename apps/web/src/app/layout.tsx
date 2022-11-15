@@ -1,13 +1,19 @@
+"use client";
+
 import "@/styles/globals.css";
 import "@/styles/toastify.css";
 // include styles from the ui package
 import "@cargoship/ui/styles.css";
 
+import { SessionProvider } from "next-auth/react";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html className="bg-white">
+    <html className="h-full bg-white">
       <head></head>
-      <body>{children}</body>
+      <body>
+        <SessionProvider>{children} </SessionProvider>
+      </body>
     </html>
   );
 }

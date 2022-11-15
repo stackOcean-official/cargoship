@@ -1,14 +1,13 @@
 import { hashPassword } from "./auth";
 
-export const createUser = async (firstname, lastname, email, password) => {
+export const createUser = async (name, email, password) => {
   const hashedPassword = await hashPassword(password);
   try {
     const res = await fetch(`/api/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        firstname,
-        lastname,
+        name,
         email,
         password: hashedPassword,
       }),

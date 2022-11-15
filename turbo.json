@@ -5,6 +5,8 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"],
       "env": [
+        "GITHUB_ID",
+        "GITHUB_SECRET",
         "MAIL_FROM",
         "NEXT_PUBLIC_EMAIL_VERIFICATION_DISABLED",
         "NEXT_PUBLIC_PASSWORD_RESET_DISABLED",

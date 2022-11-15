@@ -6,6 +6,7 @@ import { XCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { GithubButton } from "../GithubButton";
 
 export const SignupForm = () => {
   const router = useRouter();
@@ -15,8 +16,7 @@ export const SignupForm = () => {
     e.preventDefault();
     try {
       await createUser(
-        e.target.elements.firstname.value,
-        e.target.elements.lastname.value,
+        e.target.elements.name.value,
         e.target.elements.email.value,
         e.target.elements.password.value
       );
@@ -50,30 +50,15 @@ export const SignupForm = () => {
       )}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="firstname" className="text-ui-gray-dark block text-sm font-medium">
-            First name
+          <label htmlFor="name" className="text-ui-gray-dark block text-sm font-medium">
+            Full Name
           </label>
           <div className="mt-1">
             <input
-              id="firstname"
-              name="firstname"
+              id="name"
+              name="name"
               type="text"
               autoComplete="given-name"
-              required
-              className="placeholder-ui-gray-medium border-ui-gray-medium ph-no-capture block w-full appearance-none rounded-md border px-3 py-2 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="lastname" className="text-ui-gray-dark block text-sm font-medium">
-            Last name
-          </label>
-          <div className="mt-1">
-            <input
-              id="lastname"
-              name="lastname"
-              type="text"
-              autoComplete="family-name"
               required
               className="placeholder-ui-gray-medium border-ui-gray-medium ph-no-capture block w-full appearance-none rounded-md border px-3 py-2 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
             />
@@ -148,6 +133,15 @@ export const SignupForm = () => {
             </div>
           )}
         </div>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center" aria-hidden="true">
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-white px-2 text-sm text-gray-500">Sign up with</span>
+          </div>
+        </div>
+        <GithubButton text="Sign up with GitHub" />
       </form>
     </>
   );
