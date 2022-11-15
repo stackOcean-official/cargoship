@@ -32,6 +32,9 @@ export default function ProjectsLayout({ children }) {
   const { data: session, status } = useSession();
   const router = useRouter();
 
+  if (status === "loading") {
+    return <div>Loading</div>;
+  }
   if (!session) {
     router.push(`/auth/signin?callbackUrl=${encodeURIComponent(window.location.href)}`);
     return <div></div>;
