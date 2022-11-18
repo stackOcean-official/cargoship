@@ -51,7 +51,9 @@ export const sendForgotPasswordEmail = async (user) => {
   const token = createToken(user.id, user.email, {
     expiresIn: "1d",
   });
-  const verifyLink = `${process.env.NEXTAUTH_URL}/auth/reset-password?token=${encodeURIComponent(token)}`;
+  const verifyLink = `${process.env.NEXTAUTH_URL}/auth/forgot-password/reset?token=${encodeURIComponent(
+    token
+  )}`;
   await sendEmail({
     to: user.email,
     subject: "Reset your Cargoship password",
