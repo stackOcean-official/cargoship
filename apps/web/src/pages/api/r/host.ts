@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     console.log(file);
-    callback(null, Date.now() + path.extname(file.originalname) + ".rds");
+    callback(null, Date.now() + file.originalname + ".rds");
   },
 });
 
