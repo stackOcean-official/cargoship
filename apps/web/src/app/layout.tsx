@@ -3,7 +3,6 @@
 import "@/styles/globals.css";
 import "@/styles/toastify.css";
 // include styles from the ui package
-import "@cargoship/ui/styles.css";
 
 import { SessionProvider } from "next-auth/react";
 

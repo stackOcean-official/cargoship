@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Logo } from "../Logo";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
   if (session) {

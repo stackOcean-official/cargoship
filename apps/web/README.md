@@ -1,30 +1,78 @@
-## Getting Started
+# Cargoship
 
-First, run the development server:
+> still in development
 
-```bash
-yarn dev
+Easy deployment for those with strengths in other disciplines: Data scientists, ML engineers, managers, and no-coders.
+
+### How to run locally (for development)
+
+To get the project running locally on your machine you need to have the following development tools installed:
+
+- Node.JS (we recommend v16)
+- [pnpm](https://pnpm.io/)
+- [Docker](https://www.docker.com/) (to run PostgreSQL / MailHog)
+
+1. Clone the project:
+
+```sh
+git clone https://github.com/stackOcean-official/cargoship
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+and move into the directory
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```sh
+cd cargoship
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+2. Install Node.JS packages via pnpm. Don't have pnpm? Get it [here](https://pnpm.io/installation)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```sh
+pnpm install
+```
 
-## Learn More
+3. To make the process of installing a dev dependencies easier, we offer a [`docker-compose.yml`](https://docs.docker.com/compose/) with the following servers:
 
-To learn more about Next.js, take a look at the following resources:
+- a `postgres` container and environment variables preset to reach it,
+- a `mailhog` container that acts as a mock SMTP server and shows received mails in a web UI (forwarded to your host's `localhost:8025`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sh
+docker-compose -f docker-compose.dev.yml up -d
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+4. Create a `.env` file based on `.env.example` and change it according to your setup. If you are using a cloud based database or another mail server, you will need to update the `DATABASE_URL` and SMTP settings in your `.env` accordingly.
 
-## Deploy on Vercel
+```sh
+cp .env.example .env
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_source=github.com&utm_medium=referral&utm_campaign=turborepo-readme) from the creators of Next.js.
+5. Make sure your PostgreSQL Database Server is running. Then let prisma set up the database for you:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```sh
+pnpm dlx prisma migrate dev
+```
+
+6. Start the development server:
+
+```sh
+pnpm dev
+```
+
+**You can now access the app on [https://localhost:3000](https://localhost:3000)**. You will be automatically redirected to the login. To use your local installation of cargoship, create a new account.
+
+For viewing the confirmation email and other emails the system sends you, you can access mailhog at [https://localhost:8025](https://localhost:8025)
+
+### Build
+
+To build all apps and packages, run the following command:
+
+```sh
+pnpm build
+```
+
+### Develop
+
+To develop all apps and packages, run the following command:
+
+```sh
+pnpm dev
+```

@@ -5,6 +5,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      /* "@ui/*": ["../../packages/ui/src/*"], */
       "@/*": ["./src/*"]
     },
     "plugins": [

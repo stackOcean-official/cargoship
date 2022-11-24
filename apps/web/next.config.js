@@ -17,7 +17,7 @@ module.exports = {
     // Important: return the modified config
     return config;
   },
-  /* async redirects() {
+  async redirects() {
     return [
       {
         source: "/",
@@ -25,5 +25,5 @@ module.exports = {
         permanent: false,
       },
     ];
-  }, */
+  },
 };

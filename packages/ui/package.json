@@ -9,21 +9,19 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "tsup src/index.tsx --format esm,cjs --dts --external react && tailwindcss -i ./src/styles.css -o ./dist/styles.css",
-    "dev": "concurrently \"tsup src/index.tsx --format esm,cjs --dts --external react --watch\" \"tailwindcss -i ./src/styles.css -o ./dist/styles.css --watch\"",
+    "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
+    "dev": "tsup src/index.tsx --format esm,cjs --dts --external react --watch",
     "clean": "rm -rf dist"
   },
   "devDependencies": {
-    "@cargoship/tailwind-config": "workspace:*",
     "@cargoship/tsconfig": "workspace:*",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "concurrently": "^7.5.0",
     "eslint": "^8.27.0",
-    "eslint-config-custom": "workspace:*",
+    "eslint-config-cargoship": "workspace:*",
     "postcss": "^8.4.19",
     "react": "^18.2.0",
-    "tailwindcss": "^3.2.3",
     "tsup": "^6.4.0",
     "typescript": "^4.8.4"
   },
