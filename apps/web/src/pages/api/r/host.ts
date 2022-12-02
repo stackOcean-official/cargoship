@@ -21,7 +21,12 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     console.log(file);
-    callback(null, Date.now() + file.originalname + ".rds");
+    callback(
+      null,
+      Date.now() + file.originalname + path.extname(file.originalname) === ""
+        ? ".rds"
+        : path.extname(file.originalname)
+    );
   },
 });
 
@@ -32,6 +37,7 @@ const uploadFile = upload.single("model");
 apiRoute.use(uploadFile);
 
 apiRoute.post((req, res) => {
+  console.log(req.body);
   res.status(200).json({ data: "success" });
 });
 
