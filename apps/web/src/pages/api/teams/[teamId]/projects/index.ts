@@ -1,6 +1,8 @@
 import { getSessionOrUser } from "@/lib/apiHelper";
 import { prisma } from "@cargoship/database";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { execa } from "execa";
+import * as fs from "fs/promises";
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   // Check Authentication
@@ -43,16 +45,22 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   // Required fields in body: -
   // Optional fields in body: label, schema
   else if (req.method === "POST") {
-    const project = req.body;
+    const projectData = req.body;
 
     // create project in db
-    const result = await prisma.project.create({
+    const project = await prisma.project.create({
       data: {
-        ...project,
+        ...projectData,
         team: { connect: { id: teamId } },
       },
     });
-    res.json(result);
+    // setup project folder
+    await execa("mkdir", ["-p", `../../docker/projects/${project.id}`]);
+    await execa("cp", ["./templates/Dockerfile", `../../docker/projects/${project.id}/Dockerfile`]);
+    let dockerCompose = await fs.readFile("./templates/docker-compose.yml", { encoding: "utf8" });
+    dockerCompose = dockerCompose.replaceAll("{{project_id}}", project.id);
+    await fs.writeFile(`../../docker/projects/${project.id}/docker-compose.yml`, dockerCompose);
+    res.json(project);
   }
 
   // Unknown HTTP Method

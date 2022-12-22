@@ -1,0 +1,18 @@
+version: "3.5"
+
+services:
+  shiny:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.shiny.rule=Host(`{{project_id}}.cargoship.stackocean.com`)" # TODO: Change with your own domain
+      - "traefik.http.routers.shiny.tls.certresolver=default"
+      - "traefik.http.routers.shiny.entrypoints=websecure"
+      - "traefik.http.services.shiny.loadbalancer.server.port=3838"
+networks:
+  web:
+    external: true

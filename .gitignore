@@ -36,3 +36,5 @@ yarn-error.log*
 # turbo
 .turbo
 .Rproj.user
+
+docker/projects
