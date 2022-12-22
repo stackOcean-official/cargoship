@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 # Copy .env file because Docker don't follow symlinks
 COPY .env /app/apps/web/
- 
+
 RUN pnpm install
 
 # Build the project
@@ -17,12 +17,16 @@ RUN pnpm turbo run build --filter=web...
 FROM node:18-slim AS runner
 RUN npm install -g pnpm
 
-# Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-USER nextjs
+# Install Docker
+RUN apt-get update
+RUN apt-get install -y ca-certificates curl gnupg lsb-release nano
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN apt-get update
+RUN apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
-WORKDIR /home/nextjs
+WORKDIR /app
 
 COPY --from=installer /app/apps/web/next.config.js .
 COPY --from=installer /app/apps/web/package.json .

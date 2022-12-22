@@ -1,23 +1,56 @@
 version: "3.3"
 services:
   postgres:
+    restart: unless-stopped
     image: postgres:13-alpine
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - cargoship
 
-  hostr:
+  cargoship:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
     depends_on:
       - postgres
-    ports:
-      - 3000:3000
+      - traefik
     env_file:
       - .env
+    volumes:
+      - ./docker:/app/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - web
+      - cargoship
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cargoship.rule=Host(`cargoship.stackocean.com`)" # TODO: Change with your own domain
+      - "traefik.http.routers.cargoship.tls.certresolver=default"
+      - "traefik.http.routers.cargoship.entrypoints=websecure"
+      - "traefik.http.services.cargoship.loadbalancer.server.port=3000"
 
+  traefik:
+    image: "traefik:v2.8"
+    restart: unless-stopped
+    container_name: "traefik"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - ./docker/traefik/traefik.yml:/traefik.yml
+      - ./docker/traefik/acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - web
+networks:
+  cargoship:
+  web:
+    external: true
 volumes:
   postgres:
     driver: local
