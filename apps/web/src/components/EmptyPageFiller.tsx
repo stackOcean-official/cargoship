@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@formbricks/ui";
+import { Button } from "@cargoship/ui";
 import React from "react";
 
 interface Props {
