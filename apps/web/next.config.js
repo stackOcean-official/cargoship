@@ -9,7 +9,6 @@ module.exports = {
   output: "standalone",
   experimental: {
     outputFileTracingRoot: path.join(__dirname, "../../"),
-    appDir: true,
     serverComponentsExternalPackages: ["@prisma/client"],
   },
   webpack: (config) => {
@@ -21,7 +20,7 @@ module.exports = {
     return [
       {
         source: "/",
-        destination: "/projects/",
+        destination: "/app/",
         permanent: false,
       },
     ];

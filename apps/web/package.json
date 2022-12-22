@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@cargoship/hq",
+  "name": "@cargoship/web",
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev",
@@ -20,7 +20,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0",
-    "react-toastify": "^9.1.1"
+    "react-loader-spinner": "^5.3.4",
+    "react-toastify": "^9.1.1",
+    "swr": "^2.0.0"
   },
   "devDependencies": {
     "@cargoship/database": "workspace:*",
