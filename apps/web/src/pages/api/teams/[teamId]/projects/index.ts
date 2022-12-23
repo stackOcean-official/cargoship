@@ -1,8 +1,7 @@
 import { getSessionOrUser } from "@/lib/apiHelper";
+import { setupProject } from "@/lib/docker";
 import { prisma } from "@cargoship/database";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { execa } from "execa";
-import * as fs from "fs/promises";
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   // Check Authentication
@@ -54,12 +53,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         team: { connect: { id: teamId } },
       },
     });
-    // setup project folder
-    await execa("mkdir", ["-p", `../../docker/projects/${project.id}`]);
-    await execa("cp", ["./templates/Dockerfile", `../../docker/projects/${project.id}/Dockerfile`]);
-    let dockerCompose = await fs.readFile("./templates/docker-compose.yml", { encoding: "utf8" });
-    dockerCompose = dockerCompose.replaceAll("{{project_id}}", project.id);
-    await fs.writeFile(`../../docker/projects/${project.id}/docker-compose.yml`, dockerCompose);
+    await setupProject(project.id);
     res.json(project);
   }
 

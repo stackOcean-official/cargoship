@@ -155,7 +155,7 @@ export default function ProfileSettingsPage() {
               <Button variant="secondary" className="mr-2">
                 Cancel
               </Button>
-              <Button type="submit">Cancel</Button>
+              <Button type="submit">Create</Button>
             </div>
           </form>
         </Modal>

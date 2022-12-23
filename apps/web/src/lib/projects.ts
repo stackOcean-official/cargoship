@@ -25,7 +25,7 @@ export const useProject = (id: string, teamId: string) => {
 
 export const persistProject = async (project) => {
   try {
-    await fetch(`/api/projects/${project.id}/`, {
+    await fetch(`/api/teams/${project.teamId}/projects/${project.id}/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(project),
@@ -68,6 +68,50 @@ export const getProjectElementFieldSetter = (
 ) => {
   return (input, field, parentField = "") =>
     setProjectElementField(project, mutateProject, pageId, elementId, input, field, parentField);
+};
+
+export const fetchLogs = async (teamId, projectId: string) => {
+  try {
+    return await fetch(`/api/teams/${teamId}/projects/${projectId}/logs`).then((res) => res.json());
+  } catch (error) {
+    console.error(error);
+    throw Error(`fetchLogs: unable to fetch logs: ${error.message}`);
+  }
+};
+
+export const overwriteRFile = async (teamId, projectId: string, rFileContent) => {
+  try {
+    return await fetch(`/api/teams/${teamId}/projects/${projectId}/rfile`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: rFileContent }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error(error);
+    throw Error(`fetchLogs: unable to fetch logs: ${error.message}`);
+  }
+};
+
+export const startServer = async (teamId, projectId: string) => {
+  try {
+    return await fetch(`/api/teams/${teamId}/projects/${projectId}/start`, {
+      method: "POST",
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error(error);
+    throw Error(`startServer: unable to start server: ${error.message}`);
+  }
+};
+
+export const stopServer = async (teamId, projectId: string) => {
+  try {
+    return await fetch(`/api/teams/${teamId}/projects/${projectId}/stop`, {
+      method: "POST",
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error(error);
+    throw Error(`stopServer: unable to start server: ${error.message}`);
+  }
 };
 
 export const setProjectElementField = (

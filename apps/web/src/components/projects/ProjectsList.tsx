@@ -40,7 +40,7 @@ export default function ProjectsList({ teamId }) {
                 onClick={() => newProject()}
                 alertText="You don't have any projects yet."
                 hintText="Start by creating a project."
-                buttonText="create feedback project"
+                buttonText="create first project"
                 borderStyles="border-4 border-dotted border-red"
                 hasButton={true}>
                 <DocumentPlusIcon className="stroke-thin mx-auto h-24 w-24 text-slate-300" />

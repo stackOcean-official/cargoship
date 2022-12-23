@@ -36,7 +36,6 @@ export default function LayoutApp({ children }) {
   }
 
   if (!session) {
-    console.log("no sessions");
     router.push(`/auth/signin?callbackUrl=${encodeURIComponent(window.location.href)}`);
     return <div></div>;
   }
