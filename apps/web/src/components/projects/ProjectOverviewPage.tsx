@@ -284,8 +284,8 @@ export default function ProjectOverviewPage() {
                 <h3 className="block pb-4 text-lg font-semibold text-slate-800">Quick Tips</h3>
                 <p className="font-bold">Authentication</p>
                 <p className="my-3 text-sm text-gray-600">
-                  You need to generate an API key for your project and add it in the "X-API-Key" header. You
-                  can geenrate a new API key in the{" "}
+                  You need to generate an API key for your project and add it in the &quot;X-API-Key&quot;
+                  header. You can geenrate a new API key in the{" "}
                   <Link href="/app/me/settings" className="underline">
                     profile settings
                   </Link>
