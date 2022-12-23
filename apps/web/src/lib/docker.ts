@@ -3,6 +3,10 @@ import * as fs from "fs/promises";
 
 export const setupProject = async (projectId: string) => {
   // setup project folder
+  const res1 = await execa("pwd");
+  console.log(res1.stdout);
+  const res2 = await execa("ls", ["-la"]);
+  console.log(res2.stdout);
   await execa("mkdir", ["-p", `../../docker/projects/${projectId}`]);
   await execa("cp", ["./templates/Dockerfile", `../../docker/projects/${projectId}/Dockerfile`]);
   let dockerCompose = await fs.readFile("./templates/docker-compose.yml", { encoding: "utf8" });
